@@ -1,3 +1,5 @@
+// TODO: add pixel information and functionality
+
 const readImg = input => {
     const img = document.getElementById("imageResult");
 
@@ -25,7 +27,7 @@ const showInfo = (input, img) => {
     const name = file.name;
 
     const info = {
-        tamaño: `${file.size} Bytes`,
+        tamaño: `${file.size / 1000} KB`,
         tipo: file.type.split("/")[1],
         ancho: img.width + "px",
         alto: img.height + "px"
@@ -34,7 +36,7 @@ const showInfo = (input, img) => {
     let str = "";
 
     for (const [key, value] of Object.entries(info)) {
-        str += addP(key + ": " + value);
+        str += addP(key.toUpperCase() + ": " + value);
     }
 
     infoName.textContent = `Nombre del archivo: ${name}`;
