@@ -1,33 +1,44 @@
-var WIDTH, HEIGHT;
+const readImg = input => {
+    const img = document.getElementById("imageResult");
 
-var canvas = document.getElementById('canvas'),
-    ctx = canvas.getContext('2d');
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        const oImg = new Image();
 
-var requestAnimationFrame = window.requestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.msRequestAnimationFrame;
+        oImg.onload = () => {
+            console.log(oImg.width, oImg.height);
+            showInfo(input, oImg);
+        };
 
-function init() {
-    WIDTH = window.innerWidth;
-    HEIGHT = window.innerHeight;
+        reader.onload = e => {
+            img.src = e.target.result;
+            oImg.src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+};
 
-    canvas.setAttribute('width', WIDTH);
-    canvas.setAttribute('height', HEIGHT);
+const showInfo = (input, img) => {
+    const infoName = document.getElementById("upload-label");
+    const infoArea = document.getElementById("image-info");
+    const file = input.files[0];
+    const name = file.name;
 
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
-    ctx.beginPath();
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, WIDTH, HEIGHT);
-    ctx.closePath();
+    const info = {
+        tamaño: `${file.size} Bytes`,
+        tipo: file.type.split("/")[1],
+        ancho: img.width + "px",
+        alto: img.height + "px"
+    };
 
-    ani();
-}
+    let str = "";
 
-function ani() {
+    for (const [key, value] of Object.entries(info)) {
+        str += addP(key + ": " + value);
+    }
 
+    infoName.textContent = `Nombre del archivo: ${name}`;
+    infoArea.innerHTML = str;
+};
 
-    //requestAnimationFrame(ani);
-}
-
-init();
+const addP = str => `<p>${str}</p>`;
