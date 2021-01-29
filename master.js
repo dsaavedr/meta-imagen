@@ -6,6 +6,8 @@ const canvasContainer = document.getElementById("image-area");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const accepted = ["jpeg", "png", "jpg"];
+const info = document.getElementById("pixel-info");
+const color = document.getElementById("color");
 
 const readImg = input => {
     if (input.files && input.files[0]) {
@@ -14,6 +16,9 @@ const readImg = input => {
             const reader = new FileReader();
 
             reader.onload = e => {
+                canvas.classList.remove("hidden");
+                info.innerHTML = "";
+                color.style.background = "white";
                 try {
                     canvas.removeEventListener("click", pixelInfo);
                 } catch (err) {
@@ -65,8 +70,6 @@ const showInfo = (input, img) => {
 };
 
 const pixelInfo = e => {
-    const info = document.getElementById("pixel-info");
-
     const rect = canvas.getBoundingClientRect();
     const x = floor(e.clientX - rect.left);
     const y = floor(e.clientY - rect.top);
@@ -82,7 +85,7 @@ const pixelInfo = e => {
     str += addP(`RGB: ${r}, ${g}, ${b}`);
 
     info.innerHTML = str;
-    document.getElementById("color").style.background = hex;
+    color.style.background = hex;
 };
 
 const addP = (str, id = "") => `<p id=${id}>${str}</p>`;
