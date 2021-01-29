@@ -78,13 +78,14 @@ const pixelInfo = e => {
     let str = "";
     str += "<h6>Información del pixel:</h6>";
     str += addP("Coordenadas: " + x + ", " + y);
-    str += addP("Hex: " + hex);
+    str += addP("Hex: " + hex, "hex");
     str += addP(`RGB: ${r}, ${g}, ${b}`);
 
     info.innerHTML = str;
+    document.getElementById("color").style.background = hex;
 };
 
-const addP = str => `<p>${str}</p>`;
+const addP = (str, id = "") => `<p id=${id}>${str}</p>`;
 
 const capitalize = str => {
     const fl = str.charAt(0);
