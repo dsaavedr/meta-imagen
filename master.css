@@ -5,6 +5,10 @@ body {
   padding: 0;
 }
 
+body {
+  background: #eee;
+}
+
 #upload {
   opacity: 0;
 }

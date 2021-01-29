@@ -18,7 +18,7 @@ const readImg = input => {
             reader.onload = e => {
                 canvas.classList.remove("hidden");
                 info.innerHTML = "";
-                color.style.background = "white";
+                color.style.opacity = 0;
                 try {
                     canvas.removeEventListener("click", pixelInfo);
                 } catch (err) {
@@ -86,6 +86,7 @@ const pixelInfo = e => {
 
     info.innerHTML = str;
     color.style.background = hex;
+    color.style.opacity = 1;
 };
 
 const addP = (str, id = "") => `<p id=${id}>${str}</p>`;
