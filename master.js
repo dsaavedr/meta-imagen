@@ -1,13 +1,10 @@
-// TODO: add pixel information and functionality
-// TODO: move to canvas
-
-const img = new Image();
-const canvasContainer = document.getElementById("image-area");
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const accepted = ["jpeg", "png", "jpg"];
-const info = document.getElementById("pixel-info");
-const color = document.getElementById("color");
+const img = new Image(),
+    canvasContainer = document.getElementById("image-area"),
+    canvas = document.getElementById("canvas"),
+    ctx = canvas.getContext("2d"),
+    accepted = ["jpeg", "png", "jpg"],
+    info = document.getElementById("pixel-info"),
+    color = document.getElementById("color");
 
 const readImg = input => {
     if (input.files && input.files[0]) {
@@ -33,6 +30,17 @@ const readImg = input => {
                     showInfo(input, img);
 
                     canvas.addEventListener("click", pixelInfo);
+                    canvas.addEventListener("mouseenter", () => {
+                        canvas.addEventListener("mousemove", tooltip);
+                    });
+                    canvas.addEventListener("mouseleave", () => {
+                        try {
+                            canvas.removeEventListener("mousemove", tooltip);
+                            document.getElementById("tooltip").style.visibility = "hidden";
+                        } catch (err) {
+                            console.log(err);
+                        }
+                    });
                 };
                 img.src = e.target.result;
             };
@@ -75,7 +83,7 @@ const pixelInfo = e => {
     const y = floor(e.clientY - rect.top);
     const p = ctx.getImageData(x, y, 1, 1).data;
     const [r, g, b] = p;
-    const hex = rgbToHex(r, g, b);
+    const hex = rgbToHex(r, g, b).toUpperCase();
     const rgb = rgbString(r, g, b);
 
     let str = "";
@@ -87,6 +95,22 @@ const pixelInfo = e => {
     info.innerHTML = str;
     color.style.background = hex;
     color.style.opacity = 1;
+};
+
+const tooltip = e => {
+    const rect = canvas.getBoundingClientRect();
+    const x = floor(e.clientX - rect.left);
+    const y = floor(e.clientY - rect.top);
+    const tt = document.getElementById("tooltip");
+
+    const p = ctx.getImageData(x, y, 1, 1).data;
+    const [r, g, b] = p;
+    const hex = rgbToHex(r, g, b);
+
+    tt.style.background = hex;
+    tt.style.visibility = "visible";
+    tt.style.top = e.clientY - 30;
+    tt.style.left = e.clientX + 10;
 };
 
 const addP = (str, id = "") => `<p id=${id}>${str}</p>`;
